@@ -7,7 +7,7 @@
 <title>新規登録画面</title>
 </head>
 <body>
-<form action="registerServlet" method="post">
+<form action="RegisterServlet" method="post">
 ID：<input type="text" name="id"><br>
 ユーザー名：<input type="text" name ="name"><br>
 パスワード：<input type="password" name="pass"><br>

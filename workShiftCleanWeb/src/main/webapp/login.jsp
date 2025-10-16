@@ -15,6 +15,6 @@ ID：<input type="text" name="id"><br>
 パスワード：<input type="password" name="pass"><br>
 <input type = "submit" value ="ログイン">
 </form>
-<p><a href="register.jsp">新規登録はコチラ</a></p>
+<p><a href="RegisterServlet">新規登録はコチラ</a></p>
 </body>
 </html>

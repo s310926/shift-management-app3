@@ -140,7 +140,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="C:\Projects\workshift-clean_final\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Projects\workshift-clean_final\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\workShiftCleanWeb" path="/workShiftCleanWeb" reloadable="false" source="org.eclipse.jst.jee.server:workShiftCleanWeb"/></Host>
+      <Context docBase="C:\Projects\shift-management-app3\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Projects\shift-management-app3\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\workShiftCleanWeb" path="/workShiftCleanWeb" reloadable="false" source="org.eclipse.jst.jee.server:workShiftCleanWeb"/></Host>
     </Engine>
   </Service>
 </Server>

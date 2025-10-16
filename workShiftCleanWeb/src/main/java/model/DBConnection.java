@@ -10,19 +10,19 @@ public class DBConnection {
 
 		String JDBC_URL = "jdbc:mysql://localhost:3306/" + dbName + "?useSSL=false&serverTimezone=Asia/Tokyo";
 		String DB_USER = "root";
-		String DB_PASS = "";
+		String DB_PASS = "root";
 		
-		Connection conn = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS);
+			return DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS);
 		}catch(ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new IllegalStateException("JDBCドライバが見つかりません");
 		}catch(SQLException e) {
 			
 			e.printStackTrace();
+			throw new IllegalStateException("接続できません");
 			
-			}return conn;
+			}
 	}
 }
