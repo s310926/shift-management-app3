@@ -1,0 +1,28 @@
+package model;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBConnection {
+	public Connection getConnection(String dbName) {
+		
+
+		String JDBC_URL = "jdbc:mysql://localhost:3306/" + dbName + "?useSSL=false&serverTimezone=Asia/Tokyo";
+		String DB_USER = "root";
+		String DB_PASS = "";
+		
+		Connection conn = null;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS);
+		}catch(ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("JDBCドライバが見つかりません");
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+			
+			}return conn;
+	}
+}
