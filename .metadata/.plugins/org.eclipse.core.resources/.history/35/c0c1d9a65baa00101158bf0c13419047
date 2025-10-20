@@ -1,0 +1,60 @@
+package servlet;
+
+import java.io.IOException;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import model.User;
+
+/**
+ * Servlet implementation class ShiftView
+ */
+@WebServlet("/ShiftView")
+public class ShiftView extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ShiftView() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		User loginUser = (User)request.getSession().getAttribute("loginUser");
+		String userId = loginUser.getId();
+		
+		ShiftDAO dao = new ShiftDAO();
+		List<Shift> shiftlist = dao,getShiftsByUser(userId);
+		request.setAttribute("shiftList", shiftlist);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftadd.jsp");
+		dispatcher.forward(request, response);
+		
+		
+	}
+
+	private void getShiftsByUser(String userId) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
