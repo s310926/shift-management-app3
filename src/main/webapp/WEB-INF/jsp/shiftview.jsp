@@ -21,9 +21,10 @@ for(List<String>week : calendar){
 %>
 <tr>
 <% for(String day : week){
-	if(day == null || day.isEmpty()){ %>
-	<td></td>
-	<%= day.subString(8) %><br>
+	if(day == null || !day.isEmpty()){ %>
+	<td>
+	<%= day.substring(8) %><br>
+	<% String type = shiftMap.get(day); %>
 	<% if(type != null){ %>
 	<%= type %>
 	<% } else { %>
@@ -34,13 +35,6 @@ for(List<String>week : calendar){
 	</tr>
 	<% } %>
 </table>
-<!--<td>-->
-<!--<%= day %><br>-->
-<!--<% if(shiftMap.containsKey(day)){ %>-->
-<!--<span><%= shiftMap.get(day) %></span>-->
-<!--<% }else{ %>-->
-<!--<span>未登録</span>-->
-<!--<%} %>-->
-<!--</td>-->
+
 </body>
 </html>

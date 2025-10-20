@@ -40,8 +40,8 @@ public class MainServlet extends HttpServlet {
 		int month = cal.get(Calendar.MONTH) +1;
 		
 		ShiftDateGenerator generator = new ShiftDateGenerator();
-		List<String> dates = generator.getDates(year, month);
-		request.setAttribute("dates", dates);
+		List<List<String>> calendar = generator.getCalendarGrid(year, month);
+		request.setAttribute("calendar", calendar);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftadd.jsp");
 		dispatcher.forward(request, response);

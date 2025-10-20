@@ -35,7 +35,17 @@ public class ShiftAddServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) +1;
+		
+		ShiftDateGenerator generator = new ShiftDateGenerator();
+		List<List<String>> calendar = generator.getCalendarGrid(year,month);
+		request.setAttribute("calendar",calendar);
+		
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftadd.jsp");
 		dispatcher.forward(request, response);
 		
