@@ -70,11 +70,11 @@ public class ShiftAddServlet extends HttpServlet {
 		for(String date: dates) {
 		String shift = request.getParameter("shift_" + date);
 		dao.insertShift(userId,date,shift);
-		
+		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/result.jsp");
 		dispatcher.forward(request, response);
 		
-		}
+		
 		
 	}
 
