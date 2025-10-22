@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftDAO {
-	public boolean insertShift(String id, String date, String shift) {
-		String sql = "INSERT INTO SHIFT_TABLE(ID,DATE,TYPE) VALUES(?,?,?)";
+	public boolean insertShift(String id, String date, String shift,String time) {
+		String sql = "INSERT INTO SHIFT_TABLE(ID,DATE,TYPE,TIME) VALUES(?,?,?)";
 		//Connection conn = new DBConnection().getConnection("shift_db");
 		
 		try (Connection conn = new DBConnection().getConnection("shift_db");
@@ -21,6 +21,7 @@ public class ShiftDAO {
 		pStmt.setString(1, id);
 		pStmt.setString(2,date);
 		pStmt.setString(3,shift);
+		pStmt.setString(4,time);
 		
 		int result = pStmt.executeUpdate();
 		return result ==1;

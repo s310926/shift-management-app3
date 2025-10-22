@@ -21,7 +21,7 @@ for(List<String>week : calendar){
 %>
 <tr>
 <% for(String day : week){
-	if(day == null || !day.isEmpty()){ %>
+	if(day == null && !day.isEmpty()){ %>
 	<td>
 	<%= day.substring(8) %><br>
 	<% String type = shiftMap.get(day); %>

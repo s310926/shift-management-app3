@@ -33,7 +33,8 @@ public class ShiftDateGenerator {
 	    for (int day = 1; day <= maxDay; day++) {
 	        cal.set(Calendar.DAY_OF_MONTH, day);
 	        String dateStr = String.format("%04d-%02d-%02d", year, month, day);
-	        week.add(dateStr);
+	        String cleaned = dateStr.replaceAll("[\\u200B\\u200C\\u200D]", "").trim();
+	        week.add(cleaned);
 
 	        if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
 	            calendar.add(week);

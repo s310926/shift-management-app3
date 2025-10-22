@@ -69,7 +69,14 @@ public class ShiftAddServlet extends HttpServlet {
 		ShiftDAO dao = new ShiftDAO();
 		for(String date: dates) {
 		String shift = request.getParameter("shift_" + date);
-		dao.insertShift(userId,date,shift);
+		String time = request.getParameter("time_" + date);
+		if ("〇".equals(shift)) {
+	        dao.insertShift(userId, date, shift, time); // ← DAOに時間付きで渡す
+	    } else {
+	        dao.insertShift(userId, date, shift, null); // ← 時間なし
+	    }
+
+		
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/result.jsp");
 		dispatcher.forward(request, response);

@@ -51,7 +51,30 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		 Calendar cal = Calendar.getInstance();
+		    int year = cal.get(Calendar.YEAR);
+		    int month = cal.get(Calendar.MONTH) + 1;
+		    
+		    ShiftDateGenerator generator = new ShiftDateGenerator();
+		    List<List<String>> calendar = generator.getCalendarGrid(year, month);
+
+		    for (List<String> week : calendar) {
+		        for (String day : week) {
+		            if (day != null && day.length() == 10 && day.contains("-") && !day.contains("--") && !day.equals("---")) {
+		                String shift = request.getParameter("shift_" + day);
+		                String time = request.getParameter("time_" + day);
+		                System.out.println("日付: " + day + " / シフト: " + shift + " / 時間: " + time);
+		               
+		            }
+		        }
+		    }
+
+		    request.setAttribute("calendar", calendar);
+		    RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftresult.jsp");
+		    dispatcher.forward(request, response);
+		
+
+
 	}
 
 }
