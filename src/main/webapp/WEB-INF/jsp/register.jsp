@@ -11,10 +11,19 @@
 ID：<input type="text" name="id"><br>
 ユーザー名：<input type="text" name ="name"><br>
 パスワード：<input type="password" name="pass"><br>
-<input type = "submit" value ="新規登録">
+<input type = "submit" id="submit" value ="新規登録">
 
 
 </form>
+<script>
+'use strict';
 
+document.getElementById("submit").onclick = function(){
+	window.alert('新規登録完了しました,ログイン画面に移動します');
+}
+
+
+
+</script>
 </body>
 </html>

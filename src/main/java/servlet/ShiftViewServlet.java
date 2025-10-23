@@ -54,8 +54,12 @@ public class ShiftViewServlet extends HttpServlet {
 //		JSPで使いやすいようにshiftMap作成
 		Map<String,String> shiftMap = new HashMap();
 		for(Shift s : shiftlist ) {
-			shiftMap.put(s.getDate(), s.getType());
+			String date = s.getDate();
+			if(date != null && date.length() >= 10 ) {
+				shiftMap.put(date.substring(0,10), s.getType());
 
+			}
+			
 		}
 		request.setAttribute("shiftMap",shiftMap);
 		

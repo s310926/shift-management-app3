@@ -70,6 +70,9 @@ public class ShiftAddServlet extends HttpServlet {
 		for(String date: dates) {
 		String shift = request.getParameter("shift_" + date);
 		String time = request.getParameter("time_" + date);
+		String cleaned = date.trim()
+			    .replaceAll("[\\s\\u200B]", ""); // 空白・ゼロ幅スペースを除去
+			request.setAttribute("cleanDay", cleaned);
 		if ("〇".equals(shift)) {
 	        dao.insertShift(userId, date, shift, time); // ← DAOに時間付きで渡す
 	    } else {

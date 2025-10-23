@@ -1,8 +1,14 @@
 package model;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+
+
+//リストに追加するのは cleanedDate を使う
+//list.add(cleanedDate);
 
 public class ShiftDateGenerator {
 	public List<String> getDates(int year, int month){
@@ -12,7 +18,15 @@ public class ShiftDateGenerator {
 		int max = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		for(int i = 1; i <= max ; i++) {
 			cal.set(Calendar.DAY_OF_MONTH,i);
-			dates.add(String.format("%04d-%02d-%02d", year,month,i));
+//			dates.add(String.format("%04d-%02d-%02d", year,month,i));
+			String dateStr = String.format("%04d-%02d-%02d", year, month, i);
+			byte[] bytes = dateStr.getBytes(StandardCharsets.UTF_8);
+			//2. 新しい文字列を生成し、制御文字や不可視文字を全て除去
+			String cleanedDate = new String(bytes, StandardCharsets.UTF_8)
+			 .replaceAll("[\\p{Cntrl}\\u0000-\\u001F\\u007F-\\u009F\\uFEFF]", "") // 制御文字、ゼロ幅NBSPなどを除去
+			 .trim(); // 前後の空白除去
+			dates.add(cleanedDate);
+
 		}
 		return dates;
 	}
@@ -33,7 +47,10 @@ public class ShiftDateGenerator {
 	    for (int day = 1; day <= maxDay; day++) {
 	        cal.set(Calendar.DAY_OF_MONTH, day);
 	        String dateStr = String.format("%04d-%02d-%02d", year, month, day);
-	        String cleaned = dateStr.replaceAll("[\\u200B\\u200C\\u200D]", "").trim();
+	        byte[] bytes = dateStr.getBytes(StandardCharsets.UTF_8);
+			String cleaned = new String(bytes, StandardCharsets.UTF_8)
+			 .replaceAll("[\\p{Cntrl}\\u0000-\\u001F\\u007F-\\u009F\\uFEFF]", "")
+			 .trim();
 	        week.add(cleaned);
 
 	        if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
