@@ -11,6 +11,7 @@
 <h1>シフト入力画面</h1>
 
 <form action="ShiftAddServlet" method="post">
+<div id="calendarArea">
   <table>
     <c:forEach var="week" items="${calendar}">
       <tr>
@@ -35,11 +36,18 @@
       </tr>
     </c:forEach>
   </table>
+  </div>
   <input type="submit" value="登録する">
 </form>
+<section>
+	<div class="nav">
+		<div id="prev">先月</div>
+		<div id="next">来月</div>
+	</div>
+</section>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(function() {
+function bindShiftEvents() {
   $(".shift-select").on("change", function() {
     const selectedDay = $(this).data("day");
     const $timeInput = $("#time_" + selectedDay);
@@ -55,7 +63,48 @@ $(function() {
                 .val("");
     }
   });
-});
+}
+
+$(function () {
+	  bindShiftEvents();
+	});
+
+let currentYear = 2025;
+let currentMonth = 10;
+
+function updateCalendar(year,month){
+ $.ajax({
+	url:"MonthSwitchServlet",
+	method:"post",
+ 	data: { year: year, month: month },
+	
+	success:function(data){
+		$("#calendarArea").html(data);
+		currentYear = year;
+		currentMonth = month;
+		bindShiftEvents();
+		}
+		 });
+}
+
+
+document.getElementById('prev').onclick = function(){
+	let newMonth = currentMonth -1;
+	let newYear = currentYear;
+	if(newMonth === 0){
+		newMonth = 12;
+		newYear--;}
+	updateCalendar(newYear,newMonth);
+}
+document.getElementById('next').onclick = function(){
+	//来月のカレンダー取得の構文記載
+	let newMonth = currentMonth +1;
+	let newYear = currentYear;
+	if(newMonth === 13){
+		newMonth = 1;
+		newYear++; }
+	updateCalendar(newYear,newMonth);
+}
 </script>
 </body>
 </html>
