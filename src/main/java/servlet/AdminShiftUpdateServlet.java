@@ -1,12 +1,15 @@
 package servlet;
 
+import java.io.IOException;
+import java.util.Map;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
+
+import model.ShiftDAO;
 /**
  * Servlet implementation class AdminShiftUpdateServlet
  */
@@ -49,7 +52,7 @@ public class AdminShiftUpdateServlet extends HttpServlet {
 
 		        if (type != null && !type.isEmpty()) {
 		            // DAOで更新処理
-		            new ShiftDAO().updateOrInsertShift(userId, date, type);
+		        	new ShiftDAO().updateOrInsertShift(userId, userId, date, type, request.getParameter(key));
 
 			}
 		       
@@ -59,4 +62,4 @@ public class AdminShiftUpdateServlet extends HttpServlet {
 			 response.sendRedirect("AdminShiftViewServlet");
 	}
 
-
+}

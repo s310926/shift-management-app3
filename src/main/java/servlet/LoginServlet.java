@@ -45,19 +45,29 @@ public class LoginServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
+		
+		int idNum = Integer.parseInt(id);
+	    String role = (idNum < 5000) ? "admin" : "user";
+
 		//ユーザー情報をセッションに保存
-		User user = new User(id,name,pass);
+		User user = new User(id,name,pass,role);
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser",user);
 		
 		//管理者か一般ユーザーか
 		
-		if("admin".equals(id)) {
-			response.sendRedirect("admin.jsp");
+		if(idNum < 5000) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/admin.jsp");
+		    dispatcher.forward(request, response);
+
 		}else {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/select.jsp");
 		dispatcher.forward(request, response);}
+		
+		System.out.println("受け取ったID: " + id);
+		System.out.println("数値変換後: " + idNum);
+		System.out.println("判定されたROLE: " + role);
 	}
-
+	
 }

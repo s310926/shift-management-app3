@@ -10,24 +10,24 @@ import java.util.List;
 import java.util.Map;
 
 public class ShiftDAO {
-	public boolean insertShift(String id, String date, String shift,String time) {
-		String sql = "INSERT INTO SHIFT_TABLE(ID,DATE,TYPE,TIME) VALUES(?,?,?,?)";
+	public boolean insertShift(String id,String userId, String date, String shift,String time) {
+		String sql = "INSERT INTO shift_table(USER_ID,DATE,TYPE,TIME) VALUES(?,?,?,?)";
 		//Connection conn = new DBConnection().getConnection("shift_db");
 		
 		try (Connection conn = new DBConnection().getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql)){
 			
 		
-		
-		
-		pStmt.setString(1, id);
+		pStmt.setString(1, userId);
 		pStmt.setString(2,date);
 		pStmt.setString(3,shift);
 		pStmt.setString(4,time);
 		
 		int result = pStmt.executeUpdate();
+
 		return result ==1;
 		
+//	
 		
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -36,18 +36,39 @@ public class ShiftDAO {
 		
 		}
 	}
-	public boolean updateOrInsertShift(String userId,String type,String date) {
-		String updateSql = "UPDATE SHIFT_TABLE SET TYPE=? WHERE ID=? AND DATE=?";
-	    String insertSql = "INSERT INTO SHIFT_TABLE(ID, DATE, TYPE) VALUES (?, ?, ?)";
+	public boolean updateOrInsertShift(String userId,String date,String type,String time) {
+		String updateSql = "UPDATE shift_table SET TYPE=?, TIME=? WHERE USER_ID=? AND DATE=?";
+	    String insertSql = "INSERT INTO shift_table(USER_ID, DATE, TYPE,TIME) VALUES (?, ?,?,?)";
 	    
 	    try(Connection conn = new DBConnection().getConnection("shift_db");
-	    		PreparedStatement updatepStmt = conn.prepareStatement(updatesql)){
+	    		PreparedStatement updateStmt = conn.prepareStatement(updateSql)){
 	    	
+	    	updateStmt.setString(1,type);
+	    	updateStmt.setString(2,time);
+	    	updateStmt.setString(3,userId);
+	    	updateStmt.setString(4,date);
+	    	
+	    	
+	    	int result = updateStmt.executeUpdate();
+	    	
+	    	if(result == 0) {
+	    		try(PreparedStatement insertStmt = conn.prepareStatement(insertSql)){
+	    				insertStmt.setString(1,userId);
+	    				insertStmt.setString(2,date);
+	    				insertStmt.setString(3,type);
+	    				insertStmt.setString(4,time);
+	    				insertStmt.executeUpdate();
+	    	}
+	    	}
+	    	return true;
+	    }catch(SQLException e) {
+			e.printStackTrace();
+			return false;
 	    }
 	}
 	public List<Shift> getShiftsByUser(String userId){
 		List<Shift> shiftList = new ArrayList<>();
-		String sql = "SELECT DATE, TYPE FROM SHIFT_TABLE WHERE ID=? ORDER BY DATE";
+		String sql = "SELECT USER_ID, DATE, TYPE,TIME FROM shift_table WHERE USER_ID=? ORDER BY USER_ID, DATE";
 		
 		try (Connection conn = new DBConnection().getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql)){
@@ -58,8 +79,9 @@ public class ShiftDAO {
 		            while (rs.next()) {
 		                String date = rs.getString("DATE");
 		                String type = rs.getString("TYPE");
+		                String time = rs.getString("TIME");
 
-		                Shift shift = new Shift(userId, date, type);
+		                Shift shift = new Shift(userId, date, type,time);
 		                shiftList.add(shift);
 		            }
 		        }
@@ -73,7 +95,7 @@ public class ShiftDAO {
 	}
 	public Map<String,List<Shift>> getAllShiftsGroupedByUser (){
 		Map<String,List<Shift>> shiftMap = new LinkedHashMap<>();
-		String sql = "SELECT user_id,shift_date,shift_type,shift_time FROM shifts ORDER BY user_id,shift_id";
+		String sql = "SELECT USER_ID,DATE,TYPE,TIME FROM shift_table ORDER BY user_id,DATE";
 		
 		try (Connection conn = new DBConnection().getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -81,20 +103,45 @@ public class ShiftDAO {
 				
 			
 			 while (rs.next()) {
-				 	String id = rs.getString("user_id");
-	                String date = rs.getString("shift_date");
-	                String type = rs.getString("shift_type");
-	                String time = rs.getString("shift_time");
+				 	
+				 	String userId = rs.getString("USER_ID");
+	                String date = rs.getString("DATE");
+	                String type = rs.getString("TYPE");
+	                String time = rs.getString("TIME");
 
-	                Shift shift = new Shift(id, date, type,time);
+	                Shift shift = new Shift(userId, date, type,time);
 	                
-	                if(!shiftMap.containsKey(id)) {
-	                	shiftMap.put(id, new ArrayList<Shift>());
+	                if(!shiftMap.containsKey(userId)) {
+	                	shiftMap.put(userId, new ArrayList<Shift>());
 	                }
-	                shiftMap.get(id).add(shift);
+	                shiftMap.get(userId).add(shift);
 			 }
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}return shiftMap;
+	}
+	public List<Shift> findAllShifts() {
+	    List<Shift> shiftList = new ArrayList<>();
+	    String sql = "SELECT USER_ID, DATE, TYPE, TIME FROM shift_table ORDER BY DATE";
+
+	    try (Connection conn = new DBConnection().getConnection("shift_db");
+	         PreparedStatement pStmt = conn.prepareStatement(sql);
+	         ResultSet rs = pStmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            String userId = rs.getString("USER_ID");
+	            String date = rs.getString("DATE");
+	            String type = rs.getString("TYPE");
+	            String time = rs.getString("TIME");
+
+	            Shift shift = new Shift(userId, date, type, time);
+	            shiftList.add(shift);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return shiftList;
 	}
 }

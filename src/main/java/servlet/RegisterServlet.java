@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import model.RegisterDAO;
+import model.User;
+import model.UserDAO;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -46,17 +48,18 @@ public class RegisterServlet extends HttpServlet {
 		String pass = request.getParameter("pass");
 		
 		
-		
-		
-		
-		
-		
-		
-		RegisterDAO dao = new RegisterDAO();
-		
-		dao.insertLogin(id,name,pass);
-		
-		
+		 int idNum = Integer.parseInt(id);
+		    String role = (idNum < 5000) ? "admin" : "user";
+		    
+		    
+
+		    User user = new User(id, name, pass, role);
+		    new UserDAO().insertUser(user);
+		    
+		    RegisterDAO dao = new RegisterDAO();
+		    dao.insertLogin(id, name, pass);
+
+		  
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 		dispatcher.forward(request, response);

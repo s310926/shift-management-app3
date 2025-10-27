@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,9 @@
 <body>
 <h1>シフト確認、編集画面</h1>
 <form action="AdminShiftUpdateServlet" method="post">
+<h2>JSP表示テスト</h2>
+<p>shiftMap size: ${fn:length(shiftMap)}</p>
+<p>dateList size: ${fn:length(dateList)}</p>
 <table>
 <tr>
 <th>ユーザーID</th>
@@ -52,3 +56,4 @@
 
 </body>
 </html>
+

@@ -65,6 +65,7 @@ public class ShiftAddServlet extends HttpServlet {
 		
 		User loginUser = (User)request.getSession().getAttribute("loginUser");
 		String userId = loginUser.getId();
+		String id = loginUser.getId();
 		
 		ShiftDAO dao = new ShiftDAO();
 		for(String date: dates) {
@@ -73,14 +74,19 @@ public class ShiftAddServlet extends HttpServlet {
 		String cleaned = date.trim()
 			    .replaceAll("[\\s\\u200B]", ""); // 空白・ゼロ幅スペースを除去
 			request.setAttribute("cleanDay", cleaned);
+			
+//			動作確認
+			System.out.println("対象日付: " + date + " / shift値: " + shift + " / time値: " + time);
 		if ("〇".equals(shift)) {
-	        dao.insertShift(userId, date, shift, time); // ← DAOに時間付きで渡す
+	        dao.insertShift(id,userId, date, shift, time); // ← DAOに時間付きで渡す
 	    } else {
-	        dao.insertShift(userId, date, shift, null); // ← 時間なし
+	        dao.insertShift(id,userId, date, shift, null); // ← 時間なし
 	    }
 
 		
 		}
+		
+		System.out.println("ShiftAddServlet POST開始");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/result.jsp");
 		dispatcher.forward(request, response);
 		

@@ -5,15 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class RegisterDAO {
-	public boolean insertLogin(String id, String name, String pass) {
-		String sql = "INSERT INTO LOGIN_TABLE(ID,NAME,PASS) VALUES(?,?,?)";
+	public boolean insertLogin(String userId, String name, String password) {
+		String sql = "INSERT INTO user_table(USER_ID,NAME,PASSWORD) VALUES(?,?,?)";
 		//Connection conn = new DBConnection().getConnection("login_db");
-		try (Connection conn = new DBConnection().getConnection("login_db");
+		try (Connection conn = new DBConnection().getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql)){
 			
-			pStmt.setString(1, id);
+			pStmt.setString(1, userId);
 			pStmt.setString(2,name);
-			pStmt.setString(3,pass);
+			pStmt.setString(3,password);
 			
 			int result = pStmt.executeUpdate();
 			return result ==1;
