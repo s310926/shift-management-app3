@@ -10,10 +10,9 @@
 </head>
 <body>
 <h1>シフト確認、編集画面</h1>
+<c:set var="editMode" value="${param.edit == 'true'}" />
+<c:if test="${editMode}">
 <form action="AdminShiftUpdateServlet" method="post">
-<h2>JSP表示テスト</h2>
-<p>shiftMap size: ${fn:length(shiftMap)}</p>
-<p>dateList size: ${fn:length(dateList)}</p>
 <table>
 <tr>
 <th>ユーザーID</th>
@@ -51,9 +50,16 @@
 	</c:forEach>
 </tr>
 </c:forEach>
+</table>
 <input type="submit" value="保存する">
 </form>
-
+</c:if>
+<c:if test="${!editMode}">
+  <form method="get">
+    <input type="hidden" name="edit" value="true" />
+    <input type="submit" value="編集する" />
+  </form>
+</c:if>
 </body>
 </html>
 
