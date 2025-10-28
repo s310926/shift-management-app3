@@ -10,7 +10,7 @@
 <h1>シフト管理</h1>
 <p>ログインしてください</p>
 <form action = "LoginServlet" method="post" class="login-form">
-ID：<input type="text" name="id"><br>
+ID：<input type="text" name="userId"><br>
 ユーザー名：<input type="text" name ="name"><br>
 パスワード：<input type="password" name="pass"><br>
 <input type = "submit" value ="ログイン">

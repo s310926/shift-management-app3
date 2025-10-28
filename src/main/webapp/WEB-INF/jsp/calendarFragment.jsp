@@ -1,37 +1,34 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <table>
-    <c:forEach var="week" items="${calendar}">
-      <tr>
-        <c:forEach var="day" items="${week}">
-          <c:set var="cleanDay" value="${fn:replace(fn:replace(fn:trim(day), '　', ''), ' ', '')}" />
-          <c:if test="${fn:length(cleanDay) == 10 and not fn:contains(cleanDay, '--')}">
+  <tr>
+    <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+  </tr>
+  <c:forEach var="week" items="${calendar}">
+    <tr>
+      <c:forEach var="day" items="${week}">
+        <c:choose>
+          <c:when test="${not empty day}">
             <td>
-              <span>${cleanDay}</span><br>
-              <select name="shift_${cleanDay}" class="shift-select" data-day="${cleanDay}">
-                <option value="">選択</option>
-                <option value="×">× 休み希望</option>
-                <option value="△">△ 有給</option>
-                <option value="〇">〇 時間指定</option>
-              </select>
-              <input type="text" name="time_${cleanDay}" id="time_${cleanDay}" class="time-input" style="display:none;" placeholder="例: 9:00">
+              ${fn:substring(day,8,10)}<br>
+              <c:set var="daykey" value="${fn:trim(day)}" />
+              <c:choose>
+                <c:when test="${shiftMap[daykey] != null}">
+                  ${shiftMap[daykey]}
+                </c:when>
+                <c:otherwise>
+                  未登録
+                </c:otherwise>
+              </c:choose>
             </td>
-          </c:if>
-          <c:if test="${fn:length(cleanDay) != 10 or fn:contains(cleanDay, '--')}">
-            <td>&nbsp;</td>
-          </c:if>
-        </c:forEach>
-      </tr>
-    </c:forEach>
-    </table>
-</body>
-</html>
+          </c:when>
+          <c:otherwise>
+            <td></td>
+          </c:otherwise>
+        </c:choose>
+      </c:forEach>
+    </tr>
+  </c:forEach>
+</table>

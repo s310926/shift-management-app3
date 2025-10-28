@@ -1,7 +1,9 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,7 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import model.Shift;
+import model.ShiftDAO;
 import model.ShiftDateGenerator;
+import model.User;
 
 /**
  * Servlet implementation class MonthSwitchServlet
@@ -47,10 +52,42 @@ public class MonthSwitchServlet extends HttpServlet {
 		//カレンダー構成生成
 		ShiftDateGenerator dateGen = new ShiftDateGenerator();
 		List<List<String>> calendar = dateGen.getCalendarGrid(year,month);
-		request.setAttribute("calendar", calendar);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/calendarFragment.jsp");
+		
+		// ログインユーザー情報を取得（セッションから）
+		User loginUser = (User) request.getSession().getAttribute("loginUser");
+		String userId = loginUser.getUserId();
+
+		// DBからそのユーザーのシフト情報を取得
+		ShiftDAO dao = new ShiftDAO();
+		List<Shift> shiftlist = dao.getShiftsByUser(userId);
+
+		// JSPで使いやすいように shiftMap を構築（キーは yyyy-MM-dd 形式）
+		Map<String, String> shiftMap = new HashMap<>();
+		for (Shift s : shiftlist) {
+			String date = s.getDate();
+			if (date != null && date.length() >= 10) {
+				shiftMap.put(date.substring(0, 10).trim(), s.getType());
+			}
+		}
+		request.setAttribute("calendar", calendar);
+		request.setAttribute("shiftMap", shiftMap);
+		
+		String mode = request.getParameter("mode"); // "view" or "input"
+		RequestDispatcher dispatcher;
+
+		if ("input".equals(mode)) {
+		  dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftAddFragment.jsp");
+		  System.out.println("mode = " + mode); 
+
+		} else {
+		  dispatcher = request.getRequestDispatcher("WEB-INF/jsp/calendarFragment.jsp");
+		}
 		dispatcher.forward(request, response);
+
+		
+//		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/calendarFragment.jsp");
+//		dispatcher.forward(request, response);
 	}
 
 }

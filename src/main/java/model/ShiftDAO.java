@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ShiftDAO {
-	public boolean insertShift(String id,String userId, String date, String shift,String time) {
+	public boolean insertShift(String userId, String date, String shift,String time) {
 		String sql = "INSERT INTO shift_table(USER_ID,DATE,TYPE,TIME) VALUES(?,?,?,?)";
 		//Connection conn = new DBConnection().getConnection("shift_db");
 		

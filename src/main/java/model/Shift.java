@@ -7,7 +7,7 @@ public class Shift {
 	private String time;
 
 	
-	public Shift(String UserId, String date, String type, String time) {
+	public Shift(String userId, String date, String type, String time) {
 		this.userId = userId;
 		this.date = date;
 		this.type = type;

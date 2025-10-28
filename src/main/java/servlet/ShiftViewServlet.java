@@ -17,9 +17,6 @@ import model.ShiftDAO;
 import model.ShiftDateGenerator;
 import model.User;
 
-/**
- * Servlet implementation class ShiftView
- */
 @WebServlet("/ShiftViewServlet")
 public class ShiftViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -39,7 +36,10 @@ public class ShiftViewServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		User loginUser = (User)request.getSession().getAttribute("loginUser");
-		String userId = loginUser.getId();
+		String userId = loginUser.getUserId();
+		int year = request.getParameter("year") != null ? Integer.parseInt(request.getParameter("year")) : 2025;
+		int month = request.getParameter("month") != null ? Integer.parseInt(request.getParameter("month")) : 10;
+		
 		
 		ShiftDAO dao = new ShiftDAO();
 		List<Shift> shiftlist = dao.getShiftsByUser(userId);
@@ -47,22 +47,21 @@ public class ShiftViewServlet extends HttpServlet {
 		
 //		カレンダー構成生成
 		ShiftDateGenerator dateGen = new ShiftDateGenerator();
-		List<List<String>> calendar = dateGen.getCalendarGrid(2025,10);
+		List<List<String>> calendar = dateGen.getCalendarGrid(year,month);
 		request.setAttribute("calendar", calendar);
-		
 		
 //		JSPで使いやすいようにshiftMap作成
 		Map<String,String> shiftMap = new HashMap();
 		for(Shift s : shiftlist ) {
 			String date = s.getDate();
 			if(date != null && date.length() >= 10 ) {
-				shiftMap.put(date.substring(0,10), s.getType());
+				shiftMap.put(date.substring(0,10).trim(), s.getType());
 
 			}
 			
 		}
 		request.setAttribute("shiftMap",shiftMap);
-		
+
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftview.jsp");
 		dispatcher.forward(request, response);

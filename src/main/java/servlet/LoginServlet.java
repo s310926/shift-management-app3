@@ -42,15 +42,15 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String id = request.getParameter("id");
+		String userId = request.getParameter("userId");
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
 		
-		int idNum = Integer.parseInt(id);
+		int idNum = Integer.parseInt(userId);
 	    String role = (idNum < 5000) ? "admin" : "user";
 
 		//ユーザー情報をセッションに保存
-		User user = new User(id,name,pass,role);
+		User user = new User(userId,name,pass,role);
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser",user);
 		
@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/select.jsp");
 		dispatcher.forward(request, response);}
 		
-		System.out.println("受け取ったID: " + id);
+		System.out.println("受け取ったID: " + userId);
 		System.out.println("数値変換後: " + idNum);
 		System.out.println("判定されたROLE: " + role);
 	}

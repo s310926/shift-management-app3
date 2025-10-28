@@ -72,11 +72,11 @@ $(function () {
 let currentYear = 2025;
 let currentMonth = 10;
 
-function updateCalendar(year,month){
+function updateCalendarInput(year,month){
  $.ajax({
 	url:"MonthSwitchServlet",
 	method:"post",
- 	data: { year: year, month: month },
+ 	data: { year: year, month: month ,mode:"input"},
 	
 	success:function(data){
 		$("#calendarArea").html(data);
@@ -94,7 +94,7 @@ document.getElementById('prev').onclick = function(){
 	if(newMonth === 0){
 		newMonth = 12;
 		newYear--;}
-	updateCalendar(newYear,newMonth);
+	updateCalendarInput(newYear,newMonth);
 }
 document.getElementById('next').onclick = function(){
 	//来月のカレンダー取得の構文記載
@@ -103,7 +103,7 @@ document.getElementById('next').onclick = function(){
 	if(newMonth === 13){
 		newMonth = 1;
 		newYear++; }
-	updateCalendar(newYear,newMonth);
+	updateCalendarInput(newYear,newMonth);
 }
 </script>
 </body>

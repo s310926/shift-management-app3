@@ -7,8 +7,8 @@
 <title>新規登録画面</title>
 </head>
 <body>
-<form action="RegisterServlet" method="post">
-ID：<input type="text" name="id"><br>
+<form action="RegisterServlet" method="post" onsubmit="return showAlert();">
+ユーザーID：<input type="text" name="userId"><br>
 ユーザー名：<input type="text" name ="name"><br>
 パスワード：<input type="password" name="pass"><br>
 <input type = "submit" id="submit" value ="新規登録">
@@ -18,9 +18,10 @@ ID：<input type="text" name="id"><br>
 <script>
 'use strict';
 
-document.getElementById("submit").onclick = function(){
-	window.alert('新規登録完了しました,ログイン画面に移動します');
-}
+function showAlert() {
+	  alert('新規登録完了しました。\nログイン画面に移動します。');
+	  return true;
+	}
 
 
 

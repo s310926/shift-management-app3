@@ -64,8 +64,8 @@ public class ShiftAddServlet extends HttpServlet {
 		List<String> dates = generator.getDates(year, month);
 		
 		User loginUser = (User)request.getSession().getAttribute("loginUser");
-		String userId = loginUser.getId();
-		String id = loginUser.getId();
+		String userId = loginUser.getUserId();
+		
 		
 		ShiftDAO dao = new ShiftDAO();
 		for(String date: dates) {
@@ -78,9 +78,9 @@ public class ShiftAddServlet extends HttpServlet {
 //			動作確認
 			System.out.println("対象日付: " + date + " / shift値: " + shift + " / time値: " + time);
 		if ("〇".equals(shift)) {
-	        dao.insertShift(id,userId, date, shift, time); // ← DAOに時間付きで渡す
+	        dao.updateOrInsertShift(userId, date, shift, time); // ← DAOに時間付きで渡す
 	    } else {
-	        dao.insertShift(id,userId, date, shift, null); // ← 時間なし
+	        dao.updateOrInsertShift(userId, date, shift, null); // ← 時間なし
 	    }
 
 		

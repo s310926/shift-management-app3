@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"  %>
+    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,34 +11,91 @@
 </head>
 <body>
 <h1>シフト確認</h1>
+<div id="calendarArea">
+
 <table>
 <tr>
 <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
 </tr>
-<%
-List<List<String>> calendar = (List<List<String>>)request.getAttribute("calendar");
-Map<String,String> shiftMap = (Map<String,String>)request.getAttribute("shiftMap");
 
-for(List<String>week : calendar){
-%>
+<c:forEach var="week" items="${calendar}">
 <tr>
-<% for(String day : week){
-	if(day != null && !day.isEmpty()){ %>
-	<td>
-	<%= day.substring(8) %><br>
-	<% String type = shiftMap.get(day); %>
-	<% if(type != null){ %>
-	<%= type %>
-	<% } else { %>
-	未登録
-	<% }  %>
-	</td>
-	<% }else { %>
-	<td></td>
-	<% } } %>
-	</tr>
-	<% } %>
-</table>
+	<c:forEach var="day" items="${week}">
+		<c:choose>
+		<c:when test="${not empty day}">
+		<td>
+		${fn:substring(day,8,10)}<br>
+		
+		<c:set var="daykey" value="${fn:trim(day)}" />
+		<c:choose>
+		<c:when test="${shiftMap[daykey] != null}">
+		${shiftMap[daykey]}
+		</c:when>
+		<c:otherwise>
+		未登録
+		</c:otherwise>
+		</c:choose>
+		</td>
+		</c:when>
+		<c:otherwise>
+		<td></td>
+		</c:otherwise>
+		</c:choose>
+		</c:forEach>
+		</tr>
+		</c:forEach>
 
+</table>
+</div>
+<section>
+	<div class="nav">
+		<div id="prev">先月</div>
+		<div id="next">来月</div>
+	</div>
+</section>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(function () {
+	if (typeof bindShiftEvents === "function") {
+	    bindShiftEvents();
+	}
+	});
+
+let currentYear = 2025;
+let currentMonth = 10;
+
+function updateCalendarView(year,month){
+$.ajax({
+	url:"MonthSwitchServlet",
+	method:"post",
+	data: { year: year, month: month ,mode:"view"},
+	
+	success:function(data){
+		$("#calendarArea").html(data);
+		currentYear = year;
+		currentMonth = month;
+		}
+		 });
+}
+
+
+document.getElementById('prev').onclick = function(){
+	let newMonth = currentMonth -1;
+	let newYear = currentYear;
+	if(newMonth === 0){
+		newMonth = 12;
+		newYear--;}
+	updateCalendarView(newYear,newMonth);
+}
+document.getElementById('next').onclick = function(){
+	//来月のカレンダー取得の構文記載
+	let newMonth = currentMonth +1;
+	let newYear = currentYear;
+	if(newMonth === 13){
+		newMonth = 1;
+		newYear++; }
+	updateCalendarView(newYear,newMonth);
+}
+</script>
 </html>

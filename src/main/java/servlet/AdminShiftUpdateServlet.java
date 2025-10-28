@@ -52,7 +52,7 @@ public class AdminShiftUpdateServlet extends HttpServlet {
 
 		        if (type != null && !type.isEmpty()) {
 		            // DAOで更新処理
-		        	new ShiftDAO().updateOrInsertShift(userId, userId, date, type, request.getParameter(key));
+		        	new ShiftDAO().updateOrInsertShift(userId, date, type, request.getParameter(key));
 
 			}
 		       

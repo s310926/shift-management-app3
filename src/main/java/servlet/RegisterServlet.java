@@ -43,21 +43,22 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String id = request.getParameter("id");
+		String userId = request.getParameter("userId");
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
 		
+
 		
-		 int idNum = Integer.parseInt(id);
+		 int idNum = Integer.parseInt(userId);
 		    String role = (idNum < 5000) ? "admin" : "user";
 		    
 		    
 
-		    User user = new User(id, name, pass, role);
+		    User user = new User(userId, name, pass, role);
 		    new UserDAO().insertUser(user);
 		    
 		    RegisterDAO dao = new RegisterDAO();
-		    dao.insertLogin(id, name, pass);
+		    dao.insertLogin(userId, name, pass,role);
 
 		  
 		
