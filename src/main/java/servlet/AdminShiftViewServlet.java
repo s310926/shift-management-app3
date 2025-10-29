@@ -67,12 +67,6 @@ public class AdminShiftViewServlet extends HttpServlet {
 		request.setAttribute("shiftMap", shiftMap);
 		request.setAttribute("dateList", dateList);
 		
-//		テスト用
-		
-		System.out.println("取得件数: " + shiftList.size());
-		System.out.println("shiftMap size: " + shiftMap.size());
-		System.out.println("dateList size: " + dateList.size());
-//		ここまで
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/adminshiftview.jsp");
 		dispatcher.forward(request, response);

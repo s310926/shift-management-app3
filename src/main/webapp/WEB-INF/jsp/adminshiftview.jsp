@@ -11,8 +11,6 @@
 <body>
 <h1>シフト確認、編集画面</h1>
 <c:set var="editMode" value="${param.edit == 'true'}" />
-<c:if test="${editMode}">
-<form action="AdminShiftUpdateServlet" method="post">
 <table>
 <tr>
 <th>ユーザーID</th>
@@ -30,27 +28,43 @@
 <c:set var="found" value="false" />
 <c:forEach var="shift" items="${entry.value}">
 <c:if test="${shift.date == date}">
+<c:choose>
+<c:when test="${editMode}">
 <select name="shift_${entry.key}_${date}">
 	<option value="〇" ${shift.type == '〇' ? 'selected' : ''}>〇</option>
 	<option value="△" ${shift.type == '△' ? 'selected' : ''}>△</option>
 	<option value="×" ${shift.type == '×' ? 'selected' : ''}>×</option>
 </select>
+</c:when>
+<c:otherwise>
+${shift.type}
+</c:otherwise>
+</c:choose>
 <c:set var="found" value="true" />
 </c:if>
 </c:forEach>
 <c:if test="${!found}">
+<c:choose>
+<c:when test="${editMode}">
 <select name="shift_${entry.key}_${date}">
 	<option value="" selected>-</option>
 	<option value="〇">〇</option>
 	<option value="△">△</option>
 	<option value="×">×</option>
 	</select>
+	</c:when>
+	<c:otherwise>
+	-
+	</c:otherwise>
+	</c:choose>
 	</c:if>
 	</td>
 	</c:forEach>
 </tr>
 </c:forEach>
 </table>
+<c:if test="${editMode}">
+<form action="AdminShiftUpdateServlet">
 <input type="submit" value="保存する">
 </form>
 </c:if>
