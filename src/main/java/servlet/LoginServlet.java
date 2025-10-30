@@ -64,10 +64,7 @@ public class LoginServlet extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/select.jsp");
 		dispatcher.forward(request, response);}
-		
-		System.out.println("受け取ったID: " + userId);
-		System.out.println("数値変換後: " + idNum);
-		System.out.println("判定されたROLE: " + role);
+
 	}
 	
 }

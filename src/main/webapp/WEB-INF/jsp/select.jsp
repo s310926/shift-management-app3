@@ -18,6 +18,8 @@ ${loginUser.name}<br>
 ${loginUser.userId}さん、ログイン中<br>
 <p><a href="MainServlet">シフト登録する</a></p>
 <p><a href="ShiftViewServlet">シフトを見る</a></p>
-<p><a href="login.jsp">ログイン画面に戻る</a></p>
+<form action="LogoutServlet" method="post">
+<input type="submit" value="ログアウト">
+</form>
 </body>
 </html>

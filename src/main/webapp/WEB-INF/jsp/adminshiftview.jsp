@@ -64,7 +64,7 @@ ${shift.type}
 </c:forEach>
 </table>
 <c:if test="${editMode}">
-<form action="AdminShiftUpdateServlet">
+<form action="AdminShiftUpdateServlet" method="post">
 <input type="submit" value="保存する">
 </form>
 </c:if>
@@ -74,6 +74,9 @@ ${shift.type}
     <input type="submit" value="編集する" />
   </form>
 </c:if>
+<form action="" method="post">
+<input type="submit" value="Adminページ">
+</form>
 </body>
 </html>
 

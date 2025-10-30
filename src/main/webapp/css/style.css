@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+body{
+	font-family:"Segoe UI","sans-serif";
+	background-color:#fff;
+	margin: 0;
+	padding: 0;
+}
+/* login.jsp */
+
+.login-container{
+	width:320px;
+	background-color:#d3d3d3;
+	padding:24px;
+	margin:80px auto;
+	border:solid 2px #ccc;
+	border-radius:8px;
+	box-shadow:0 0 8px gray;
+}
+.login-container h1{
+	text-align:center;
+	margin-bottom:20px;
+	color: #333;
+	font-size:20px;
+}
+
+.input-field{
+	width:100%;
+	padding:10px;
+	margin-bottom:15px;
+	border:1px solid #ccc;
+	border-radius:6px;
+	box-sizing: border-box;
+	font-size:14px;
+}
+
+/* ボタンの設定  */
+
+.btn{
+	width:100%;
+	padding:10px;
+	background-color:#eaeaea;
+	color:#333;
+	border:none;
+	border-radius:6px;
+	cursor:pointer;
+	font-size:14px;
+	transition: background-color 0.3s ease;
+}
+.btn:hover {
+  background-color: #c5ae94;
+}
+
+.register-btn{
+	display:inline-block;
+	padding:10px 20px;
+	background-color: #eaeaea;
+	color:#333;
+	text-decoration:none;
+	font-size:14px;
+	transition: background-color 0.3s ease;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+}
+
+.register-btn:hover {
+  background-color: #c5ae94;
+}
+
+.register-link{
+	text-align:center;
+	margin-top:24px;
+}

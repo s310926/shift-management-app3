@@ -11,5 +11,9 @@
 <p>${loginUser.name}<br>
 ${loginUser.userId}さん、ログイン中<br></p>
 <P><a href="AdminShiftViewServlet">シフト表示</a></P>
+
+<form action="LogoutServlet" method="post">
+<input type="submit" value="ログアウト">
+</form>
 </body>
 </html>
