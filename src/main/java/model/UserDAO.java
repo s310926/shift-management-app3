@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class UserDAO {
     public boolean insertUser(User user) {
-        String sql = "INSERT INTO user_table(USER_ID, NAME, PASS, ROLE) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO user_table(USER_ID, NAME, PASSWORD, ROLE) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = new DBConnection().getConnection("shift_db");
              PreparedStatement pStmt = conn.prepareStatement(sql)) {
@@ -26,7 +26,7 @@ public class UserDAO {
         }
     }
     public User findByIdAndPassword(String userId,String pass) {
-    	String sql="SELECT * FROM user_table WHERE USER_ID = ? AND PASS = ?";
+    	String sql="SELECT * FROM user_table WHERE USER_ID = ? AND PASSWORD = ?";
     	
     	try(Connection conn = new DBConnection().getConnection("shift_db");
     			PreparedStatement pStmt = conn.prepareStatement(sql)){

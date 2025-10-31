@@ -35,6 +35,11 @@
 	<option value="△" ${shift.type == '△' ? 'selected' : ''}>△</option>
 	<option value="×" ${shift.type == '×' ? 'selected' : ''}>×</option>
 </select>
+<c:if test="${shift.type =='〇'}">
+<br>
+<select name="time_${entry.key}_${date}">
+
+</select>
 </c:when>
 <c:otherwise>
 ${shift.type}

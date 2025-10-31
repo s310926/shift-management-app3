@@ -26,7 +26,14 @@
                 <option value="△">△ 有給</option>
                 <option value="〇">〇 時間指定</option>
               </select>
-              <input type="text" name="time_${cleanDay}" id="time_${cleanDay}" class="time-input" style="display:none;" placeholder="例: 9:00">
+              <select name="time_${cleanDay}" id="time_${cleanDay}" class="time-dropdown" style="display:none;" >
+              <option value="">時間帯選択</option>
+              <option value="9:00-12:00">9:00-12:00</option>
+              <option value="12:00-18:00">12:00-18:00</option>
+              <option value="9:00-17:00">9:00-17:00</option>
+              <option value="10:00-18:00">10:00-18:00</option>
+              <option value="17:00-9:00">17:00-9:00</option>
+              </select>
             </td>
           </c:if>
           <c:if test="${fn:length(cleanDay) != 10 or fn:contains(cleanDay, '--')}">
@@ -50,17 +57,14 @@
 function bindShiftEvents() {
   $(".shift-select").on("change", function() {
     const selectedDay = $(this).data("day");
-    const $timeInput = $("#time_" + selectedDay);
+    const $timeDropdown = $("#time_" + selectedDay);
 
     if ($(this).val() === "〇") {
-      $timeInput.css("display", "inline")
-                .prop("required", true)
-                .attr("pattern", "\\d{1,2}:\\d{2}");
+      $timeDropdown.show().prop("required", true);
+               
     } else {
-      $timeInput.css("display", "none")
-                .prop("required", false)
-                .removeAttr("pattern")
-                .val("");
+      $timeDropdown.hide().prop("required", false).val("");
+                
     }
   });
 }

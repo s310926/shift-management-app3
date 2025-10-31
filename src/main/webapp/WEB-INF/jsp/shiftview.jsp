@@ -3,14 +3,18 @@
     <%@ page import="java.util.*"  %>
     <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="css/style.css">
 <title>シフト確認画面</title>
 </head>
 <body>
+<div class="login-container">
 <h1>シフト確認</h1>
+<h2 class="month-label" id="monthLabel">${year}年${month}月</h2>
 <div id="calendarArea">
 
 <table>
@@ -24,7 +28,8 @@
 		<c:choose>
 		<c:when test="${not empty day}">
 		<td>
-		${fn:substring(day,8,10)}<br>
+		<div class="date-number">${fn:substring(day,8,10)}</div>
+		<div class ="shift-mark">
 		
 		<c:set var="daykey" value="${fn:trim(day)}" />
 		<c:choose>
@@ -35,6 +40,7 @@
 		未登録
 		</c:otherwise>
 		</c:choose>
+		</div>
 		</td>
 		</c:when>
 		<c:otherwise>
@@ -53,6 +59,7 @@
 		<div id="next">来月</div>
 	</div>
 </section>
+</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -73,6 +80,7 @@ $.ajax({
 	
 	success:function(data){
 		$("#calendarArea").html(data);
+		$("#monthLabel").text(year + "年" + month + "月");
 		currentYear = year;
 		currentMonth = month;
 		}

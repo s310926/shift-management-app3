@@ -6,7 +6,7 @@ body{
 	margin: 0;
 	padding: 0;
 }
-/* login.jsp */
+/* 共通 */
 
 .login-container{
 	width:320px;
@@ -17,6 +17,9 @@ body{
 	border-radius:8px;
 	box-shadow:0 0 8px gray;
 }
+
+/*タイトル*/
+
 .login-container h1{
 	text-align:center;
 	margin-bottom:20px;
@@ -70,4 +73,124 @@ body{
 .register-link{
 	text-align:center;
 	margin-top:24px;
+}
+
+.btn-link{
+		display:inline-block;
+		padding:10px 20px;
+		background-color:#eaeaea;
+		color:#333;
+		border:none;
+		border-radius:6px;
+		cursor:pointer;
+		font-size:14px;
+		transition: background-color 0.3s ease;
+}
+
+.btn-link:hover{
+	background-color: #c5ae94;
+}
+
+/* 空入力エラー表示*/
+
+.error{
+	color:red;
+	font-size:10px;
+	margin-bottom:6px;
+	display:block;
+}
+
+/* エラーメッセージ用*/
+.error-message{
+	color:red;
+	text-align:center;
+}
+
+a{
+	display:inline-block;
+	text-decoration:none;
+	color: #183883;
+	margin:10px 0;
+	font-size:14px;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+.user-info{
+	font-weight:bold;
+	color:#333;
+	margin-bottom:10px;
+}
+
+/* カレンダー表 */
+table{
+	width:100%;
+	border-collapse:collapse;
+	margin-bottom:20px;
+}
+
+th,td{
+	height:80px;
+	border:1px solid #ccc;
+	font-size:14px;
+	background-color:#fdfdfd;
+}
+
+th{
+	background-color:#f0f0f0;
+	color:#333;
+}
+
+td{
+	position:relative;
+	vertical-align:top;
+	padding:4px;
+}
+
+td:empty{
+	background-color:#f9f9f9;
+}
+
+td:has(:contains("未登録")){
+	color:#999;
+	font-style:italic;
+}
+
+.date-number{
+	position:absolute;
+	top:4px;
+	left:6px;
+	font-size:12px;
+}
+
+.shift-mark{
+	display:flex;
+	justify-content:center;
+	margin-top:25px;
+	text-align:center;
+	font-size:16px;
+	font-weight:bold;
+}
+
+/* ナビゲーション */
+
+.nav{
+	display:flex;
+	justify-content:space-between;
+	margin-top:10px;
+}
+
+#prev,#next{
+	padding:10px 20px;
+	background-color:#eaeaea;
+	color:#183883;
+	border-radius:4px;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+#prev:hover,#next:hover{
+	background-color:#c5ae94;
 }

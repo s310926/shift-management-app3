@@ -49,6 +49,8 @@ public class ShiftViewServlet extends HttpServlet {
 		ShiftDateGenerator dateGen = new ShiftDateGenerator();
 		List<List<String>> calendar = dateGen.getCalendarGrid(year,month);
 		request.setAttribute("calendar", calendar);
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
 		
 //		JSPで使いやすいようにshiftMap作成
 		Map<String,String> shiftMap = new HashMap();

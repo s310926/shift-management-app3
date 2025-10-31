@@ -25,7 +25,14 @@
                 <option value="△">△ 有給</option>
                 <option value="〇">〇 時間指定</option>
               </select>
-              <input type="text" name="time_${cleanDay}" id="time_${cleanDay}" class="time-input" style="display:none;" placeholder="例: 9:00">
+              <select name="time_${cleanDay}" id="time_${cleanDay}" class="time-dropdown" style="display:none;" >
+              <option value="">時間帯選択</option>
+              <option value="9:00-12:00">9:00-12:00</option>
+              <option value="12:00-18:00">12:00-18:00</option>
+              <option value="9:00-17:00">9:00-17:00</option>
+              <option value="10:00-18:00">10:00-18:00</option>
+              <option value="17:00-9:00">17:00-9:00</option>
+              </select>
             </td>
           </c:if>
           <c:if test="${fn:length(cleanDay) != 10 or fn:contains(cleanDay, '--')}">
