@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,10 @@ public class ShiftViewServlet extends HttpServlet {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		User loginUser = (User)request.getSession().getAttribute("loginUser");
 		String userId = loginUser.getUserId();
-		int year = request.getParameter("year") != null ? Integer.parseInt(request.getParameter("year")) : 2025;
-		int month = request.getParameter("month") != null ? Integer.parseInt(request.getParameter("month")) : 10;
+		
+		LocalDate today = LocalDate.now();
+		int year = request.getParameter("year") != null ? Integer.parseInt(request.getParameter("year")) : today.getYear();
+		int month = request.getParameter("month") != null ? Integer.parseInt(request.getParameter("month")) : today.getMonthValue();
 		
 		
 		ShiftDAO dao = new ShiftDAO();
@@ -53,11 +56,11 @@ public class ShiftViewServlet extends HttpServlet {
 		request.setAttribute("month", month);
 		
 //		JSPで使いやすいようにshiftMap作成
-		Map<String,String> shiftMap = new HashMap();
+		Map<String,Shift> shiftMap = new HashMap();
 		for(Shift s : shiftlist ) {
 			String date = s.getDate();
 			if(date != null && date.length() >= 10 ) {
-				shiftMap.put(date.substring(0,10).trim(), s.getType());
+				shiftMap.put(date.substring(0,10).trim(), s);
 
 			}
 			

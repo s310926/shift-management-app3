@@ -32,9 +32,15 @@
 		<div class ="shift-mark">
 		
 		<c:set var="daykey" value="${fn:trim(day)}" />
+		<c:set var="shift" value="${shiftMap[daykey]}" />
 		<c:choose>
 		<c:when test="${shiftMap[daykey] != null}">
-		${shiftMap[daykey]}
+		${shift.type}
+		<c:if test="${shift.type == '〇'}">
+		<c:if test="${not empty shift.time}">
+		(${shift.time})
+		</c:if>
+		</c:if>
 		</c:when>
 		<c:otherwise>
 		未登録
@@ -69,8 +75,8 @@ $(function () {
 	}
 	});
 
-let currentYear = 2025;
-let currentMonth = 10;
+let currentYear = ${year};
+let currentMonth = ${month};
 
 function updateCalendarView(year,month){
 $.ajax({

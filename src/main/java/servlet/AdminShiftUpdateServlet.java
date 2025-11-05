@@ -33,7 +33,6 @@ public class AdminShiftUpdateServlet extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		}
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -51,15 +50,31 @@ public class AdminShiftUpdateServlet extends HttpServlet {
 		        String type = request.getParameter(key);
 
 		        if (type != null && !type.isEmpty()) {
-		            // DAOで更新処理
-		        	new ShiftDAO().updateOrInsertShift(userId, date, type, request.getParameter(key));
+		        	
+		        	if ("〇".equals(type)) {
+		                String timeKey = "time_" + userId + "_" + date;
+		                String time = request.getParameter(timeKey);
+		                if (time == null || time.isEmpty()) {
+		                    request.setAttribute("error", "〇を選んだら時間帯も選んでください（" + userId + " / " + date + "）");
+		                    request.getRequestDispatcher("/WEB-INF/jsp/adminshiftview.jsp").forward(request, response);
+		                    return;
+		                }
 
-			}
+		            // DAOで更新処理
+		        	new ShiftDAO().updateOrInsertShift(userId, date, type, time);
+
+		        	}else {
+		        		new ShiftDAO().updateOrInsertShift(userId, date, type, null);
+
+		        	}
 		       
+		        }
 			}
 		}
+	        response.sendRedirect("AdminShiftViewServlet");
+		
 	
-			 response.sendRedirect("AdminShiftViewServlet");
+		
 	}
-
 }
+	
