@@ -71,7 +71,7 @@ public class AdminShiftUpdateServlet extends HttpServlet {
 		        }
 			}
 		}
-	        response.sendRedirect("AdminShiftViewServlet");
+	        response.sendRedirect("AdminShiftViewServlet?edit=false&saved=true");
 		
 	
 		

@@ -144,4 +144,32 @@ public class ShiftDAO {
 
 	    return shiftList;
 	}
+	public Map<String, List<Shift>> getShiftMapForMonth(int year, int month) {
+	    Map<String, List<Shift>> shiftMap = new LinkedHashMap<>();
+	    String ym = String.format("%04d-%02d", year, month); // ← "2025-11" のようにゼロ埋め
+	    String sql = "SELECT USER_ID, DATE, TYPE, TIME FROM shift_table WHERE DATE LIKE ? ORDER BY USER_ID, DATE";
+
+	    try (Connection conn = new DBConnection().getConnection("shift_db");
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+
+	        pStmt.setString(1, ym + "%"); // ← "2025-11%" のように月指定
+
+	        try (ResultSet rs = pStmt.executeQuery()) {
+	            while (rs.next()) {
+	                String userId = rs.getString("USER_ID");
+	                String date = rs.getString("DATE");
+	                String type = rs.getString("TYPE");
+	                String time = rs.getString("TIME");
+
+	                Shift shift = new Shift(userId, date, type, time);
+	                shiftMap.computeIfAbsent(userId, k -> new ArrayList<>()).add(shift);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return shiftMap;
+	}
 }

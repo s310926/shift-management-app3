@@ -7,91 +7,39 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="css/adminshiftview.css">
+<link rel="stylesheet" href="css/style.css">
 <title>管理者シフト確認、編集画面</title>
 </head>
 <body>
 <h1>シフト確認、編集画面</h1>
-<c:set var="editMode" value="${param.edit == 'true'}" />
+<c:if test="${param.saved == 'true'}">
+  <div class="save-message">保存が完了しました。</div>
+</c:if>
+
+<c:set var="editMode" value="${editMode}" />
+
+
+
+ 
+
 <c:if test="${editMode}">
 <form action="AdminShiftUpdateServlet" method="post">
-</c:if>
 <div class="table-wrapper">
-<table>
-<tr>
-<th>ユーザーID</th>
-<c:forEach var="date" items="${dateList}">
-<th>${date}</th>
-</c:forEach>
-</tr>
+ <jsp:include page="adminshiftmonth.jsp" />
+ </div>
+ 
+ <input type="submit" value="保存する" class="action-btn">
+ </form>
+ </c:if>
 
-<c:forEach var="entry" items="${shiftMap}">
-<tr>
-	<td>${entry.key}</td>
 
-<c:forEach var="date" items="${dateList}">
-<td>
-<c:set var="found" value="false" />
-<c:forEach var="shift" items="${entry.value}">
-<c:if test="${shift.date == date}">
-<c:choose>
-<c:when test="${editMode}">
-<select name="shift_${entry.key}_${date}" class="shift-select" data-target="time_${entry.key}_${date}">
-	<option value="" ${empty shift.type ? 'selected' : ''}>未入力</option>
-	<option value="〇" ${shift.type == '〇' ? 'selected' : ''}>〇</option>
-	<option value="△" ${shift.type == '△' ? 'selected' : ''}>△</option>
-	<option value="×" ${shift.type == '×' ? 'selected' : ''}>×</option>
-</select>
-
-<br>
-<select name="time_${entry.key}_${date}" id="time_${entry.key}_${date}" class="time-select" style="${shift.type == '〇' ? '' : 'display:none'}">
-<option value="">時間帯選択</option>
-<option value="9:00-12:00" ${shift.time == '9:00-12:00' ? 'selected' : ''}>9:00-12:00</option>
-<option value="9:00-17:00" ${shift.time == '9:00-17:00' ? 'selected' : ''}>9:00-17:00</option>
-<option value="12:00-18:00" ${shift.time == '12:00-18:00' ? 'selected' : ''}>12:00-18:00</option>
-<option value="10:00-18:00" ${shift.time == '10:00-18:00' ? 'selected' : ''}>10:00-18:00</option>
-<option value="17:00-9:00" ${shift.time == '17:00-9:00' ? 'selected' : ''}>17:00-9:00</option>
-</select>
-
-</c:when>
-<c:otherwise>
-${shift.type}
-<c:if test="${shift.type =='〇'}">
-<c:choose>
-<c:when test="${not empty shift.time}">（${shift.time}）</c:when>
-<c:otherwise>(時間帯未入力)</c:otherwise>
-</c:choose>
+<c:if test="${!editMode}">
+  <div class="table-wrapper">
+    <jsp:include page="adminshiftmonth.jsp" />
+  </div>
 </c:if>
-</c:otherwise>
-</c:choose>
-<c:set var="found" value="true" />
-</c:if>
-</c:forEach>
-<c:if test="${!found}">
-<c:choose>
-<c:when test="${editMode}">
-<select name="shift_${entry.key}_${date}">
-	<option value="" selected>-</option>
-	<option value="〇">〇</option>
-	<option value="△">△</option>
-	<option value="×">×</option>
-	</select>
-	</c:when>
-	<c:otherwise>
-	-
-	</c:otherwise>
-	</c:choose>
-	</c:if>
-	</td>
-	</c:forEach>
-</tr>
-</c:forEach>
-</table>
-</div>
-<c:if test="${editMode}">
 
-<input type="submit" value="保存する" class="action-btn">
-</form>
-</c:if>
+
 <c:if test="${!editMode}">
   <form method="get">
     <input type="hidden" name="edit" value="true" />
@@ -101,11 +49,19 @@ ${shift.type}
 <form action="" method="post">
 <input type="submit" value="Adminページ" class="action-btn">
 </form>
+<div class="nav">
+  <button id="prev" class="action-btn">先月</button>
+  <button id="next" class="action-btn">来月</button>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(function(){
-	$(".shift-select").on("change",function(){
+  let isEditMode = '<c:out value="${editMode}" />';
+</script>
+<script>
+	$(document).on("change",".shift-select",function(){
 	const targetId = $(this).data("target");
+	console.log("targetId:", targetId);
 	const $timeSelect = $("#"+targetId);
 
 	if($(this).val() == "〇"){
@@ -130,6 +86,57 @@ $(function(){
 	  });
 		
 });
+
+
+let currentYear = ${year};
+let currentMonth = ${month};
+
+
+
+
+$(function() {
+	  
+$("#prev").on("click", function() {
+	if (isEditMode) return;
+  let newMonth = currentMonth - 1;
+  let newYear = currentYear;
+  if (newMonth === 0) {
+    newMonth = 12;
+    newYear--;
+  }
+  updateMonthView(newYear, newMonth);
+});
+
+$("#next").on("click", function() {
+	if (isEditMode) return;
+  let newMonth = currentMonth + 1;
+  let newYear = currentYear;
+  if (newMonth === 13) {
+    newMonth = 1;
+    newYear++;
+  }
+  updateMonthView(newYear, newMonth);
+});
+if(!isEditMode){
+updateMonthView(currentYear, currentMonth);
+}
+});
+
+function updateMonthView(year, month) {
+	  $.ajax({
+	    url: "AdminShiftMonthServlet",
+	    method: "post",
+	    data: { year: year, month: month ,
+	    edit: isEditMode},
+	    success: function(data) {
+	    	$(".table-wrapper").empty();
+	      $(".table-wrapper").html(data);
+	      $("#monthLabel").text(year + "年" + month + "月"); // ← 月ラベルも更新
+	      currentYear = year;
+	      currentMonth = month;
+	    }
+	  });
+	}
 </script>
 </body>
 </html>
