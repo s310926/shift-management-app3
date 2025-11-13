@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,16 +59,10 @@ public class MonthSwitchServlet extends HttpServlet {
 
 		// DBからそのユーザーのシフト情報を取得
 		ShiftDAO dao = new ShiftDAO();
-		List<Shift> shiftlist = dao.getShiftsByUser(userId);
+		Map<String,Shift> shiftMap = dao.getShiftMap(userId, year, month);
 
-		// JSPで使いやすいように shiftMap を構築（キーは yyyy-MM-dd 形式）
-		Map<String, String> shiftMap = new HashMap<>();
-		for (Shift s : shiftlist) {
-			String date = s.getDate();
-			if (date != null && date.length() >= 10) {
-				shiftMap.put(date.substring(0, 10).trim(), s.getType());
-			}
-		}
+		
+		
 		request.setAttribute("calendar", calendar);
 		request.setAttribute("shiftMap", shiftMap);
 		
@@ -78,13 +71,13 @@ public class MonthSwitchServlet extends HttpServlet {
 
 		if ("input".equals(mode)) {
 		  dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftAddFragment.jsp");
-		  System.out.println("mode = " + mode); 
-
-		} else {
+		  } else if("view".equals(mode)) {
 		  dispatcher = request.getRequestDispatcher("WEB-INF/jsp/calendarFragment.jsp");
+		}else {
+			 dispatcher = request.getRequestDispatcher("WEB-INF/jsp/calendarFragment.jsp");
+
 		}
 		dispatcher.forward(request, response);
-
 		
 //		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/calendarFragment.jsp");
 //		dispatcher.forward(request, response);

@@ -172,4 +172,32 @@ public class ShiftDAO {
 
 	    return shiftMap;
 	}
-}
+	public Map<String,Shift> getShiftMap(String userId,int year,int month){
+		Map<String,Shift> shiftMap = new LinkedHashMap<>();
+		String ym = String.format("%04d-%02d",year,month);
+		String sql = "SELECT DATE,TYPE,TIME FROM shift_table WHERE USER_ID = ?AND DATE LIKE ? ORDER BY DATE";
+		
+		try(Connection conn = new DBConnection().getConnection("shift_db");
+			PreparedStatement pStmt = conn.prepareStatement(sql)){
+			
+			pStmt.setString(1, userId);
+			pStmt.setString(2, ym + "%");
+			
+			try(ResultSet rs = pStmt.executeQuery()){
+				while(rs.next()) {
+					String date = rs.getString("DATE");
+					String type = rs.getString("TYPE");
+					String time = rs.getString("TIME");
+					
+					Shift shift = new Shift(userId,date,type,time);
+					shiftMap.put(date, shift);
+					
+				}
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+				}
+		return shiftMap;
+			}
+			
+	}

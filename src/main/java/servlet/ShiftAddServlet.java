@@ -74,15 +74,17 @@ public class ShiftAddServlet extends HttpServlet {
 		String cleaned = date.trim()
 			    .replaceAll("[\\s\\u200B]", ""); // 空白・ゼロ幅スペースを除去
 			request.setAttribute("cleanDay", cleaned);
-			
+		if(shift == null || shift.isBlank()) {
+			continue;
+		}
+		if(!"〇".equals(shift)) {
+				time="";
+		}
+		dao.updateOrInsertShift(userId, date, shift, time);
+
 //			動作確認
 			System.out.println("対象日付: " + date + " / shift値: " + shift + " / time値: " + time);
-		if ("〇".equals(shift)) {
-	        dao.updateOrInsertShift(userId, date, shift, time); // ← DAOに時間付きで渡す
-	    } else {
-	        dao.updateOrInsertShift(userId, date, shift, null); // ← 時間なし
-	    }
-
+		
 		
 		}
 		

@@ -17,51 +17,20 @@
 <h2 class="month-label" id="monthLabel">${year}年${month}月</h2>
 <div id="calendarArea">
 
+
 <table>
-<tr>
+  <tr>
 <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
 </tr>
-
-<c:forEach var="week" items="${calendar}">
-<tr>
-	<c:forEach var="day" items="${week}">
-		<c:choose>
-		<c:when test="${not empty day}">
-		<td>
-		<div class="date-number">${fn:substring(day,8,10)}</div>
-		<div class ="shift-mark">
-		
-		<c:set var="daykey" value="${fn:trim(day)}" />
-		<c:set var="shift" value="${shiftMap[daykey]}" />
-		<c:choose>
-		<c:when test="${shiftMap[daykey] != null}">
-		${shift.type}
-		<c:if test="${shift.type == '〇'}">
-		<c:if test="${not empty shift.time}">
-		(${shift.time})
-		</c:if>
-		</c:if>
-		</c:when>
-		<c:otherwise>
-		未登録
-		</c:otherwise>
-		</c:choose>
-		</div>
-		</td>
-		</c:when>
-		<c:otherwise>
-		<td></td>
-		</c:otherwise>
-		</c:choose>
-		</c:forEach>
-		</tr>
-		</c:forEach>
-
+  <tbody id="calendarBody">
+    <jsp:include page="calendarFragment.jsp" />
+  </tbody>
 </table>
 </div>
 <section>
 	<div class="nav">
 		<div id="prev">先月</div>
+		<button type="button" onclick="history.back()">選択画面に戻る</button>
 		<div id="next">来月</div>
 	</div>
 </section>
@@ -85,10 +54,11 @@ $.ajax({
 	data: { year: year, month: month ,mode:"view"},
 	
 	success:function(data){
-		$("#calendarArea").html(data);
+		$("#calendarBody").html(data);
 		$("#monthLabel").text(year + "年" + month + "月");
 		currentYear = year;
 		currentMonth = month;
+
 		}
 		 });
 }

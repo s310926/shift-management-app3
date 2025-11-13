@@ -170,12 +170,21 @@ td:has(:contains("未登録")){
 }
 
 .shift-mark{
-	display:flex;
 	justify-content:center;
 	margin-top:25px;
 	text-align:center;
 	font-size:16px;
 	font-weight:bold;
+}
+.shift-mark{
+	min-height:60px;
+}
+
+.shift-mark select{
+	display:block;
+	width:100%;
+	margin-top:4px;
+	box-sizing:border-box;
 }
 .time-dropdown{
 	display: none; /* 初期は非表示 */
@@ -190,10 +199,7 @@ td:has(:contains("未登録")){
 	 transition: all 0.3s ease;
 
 }
-.time-dropdown,
-.shift-select{
-	display:flex;
-}
+
 
 /* ナビゲーション */
 

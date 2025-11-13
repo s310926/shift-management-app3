@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -11,7 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import model.Shift;
+import model.ShiftDAO;
 import model.ShiftDateGenerator;
+import model.User;
 
 /**
  * Servlet implementation class MainServlet
@@ -43,6 +47,15 @@ public class MainServlet extends HttpServlet {
 		List<List<String>> calendar = generator.getCalendarGrid(year, month);
 		request.setAttribute("calendar", calendar);
 		
+		//ログインユーザーからシフト情報を取得
+		User loginUser = (User)request.getSession().getAttribute("loginUser");
+		if(loginUser != null) {
+			String userId = loginUser.getUserId();
+			ShiftDAO dao = new ShiftDAO();
+			Map<String,Shift>ShiftMap = dao.getShiftMap(userId,year,month);
+			request.setAttribute("shiftMap",ShiftMap);
+		}
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftadd.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -70,6 +83,14 @@ public class MainServlet extends HttpServlet {
 		    }
 
 		    request.setAttribute("calendar", calendar);
+		    User loginUser = (User)request.getSession().getAttribute("loginUser");
+			if(loginUser != null) {
+				String userId = loginUser.getUserId();
+				ShiftDAO dao = new ShiftDAO();
+				Map<String,Shift>ShiftMap = dao.getShiftMap(userId,year,month);
+				request.setAttribute("shiftMap",ShiftMap);
+			}
+		    
 		    RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiftresult.jsp");
 		    dispatcher.forward(request, response);
 		
