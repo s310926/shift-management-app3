@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-	public Connection getConnection(String dbName) {
+	public static Connection getConnection(String dbName) {
 		
 
 		String JDBC_URL = "jdbc:mysql://localhost:3306/" + dbName + "?useSSL=false&serverTimezone=Asia/Tokyo";

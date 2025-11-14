@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import model.DateGenerator;
 import model.Shift;
 import model.ShiftDAO;
 
@@ -53,12 +54,17 @@ public class AdminShiftMonthServlet extends HttpServlet {
 
 		List<String> dateList = DateGenerator.getDatesForMonth(year, month);
 		Map<String, List<Shift>> shiftMap = dao.getShiftMapForMonth(year, month);
-
+		Map<String,String> userNameMap = dao.getUserNameMap();
+//test
+		System.out.println("year = " + year + ", month = " + month);
+		System.out.println("editMode = " + editMode);
+//		test
 		request.setAttribute("year", year);
 		request.setAttribute("month", month);
 		request.setAttribute("dateList", dateList);
 		request.setAttribute("shiftMap", shiftMap);
 		request.setAttribute("editMode", editMode);
+		request.setAttribute("userNameMap",userNameMap);
 
 		response.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/adminshiftmonth.jsp");

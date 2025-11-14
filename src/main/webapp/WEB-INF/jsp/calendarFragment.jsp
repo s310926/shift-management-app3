@@ -3,9 +3,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-  <tr>
-    <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
-  </tr>
+<!--  <tr>-->
+<!--    <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>-->
+<!--  </tr>-->
+
+
   <c:forEach var="week" items="${calendar}">
     <tr>
       <c:forEach var="day" items="${week}">
@@ -13,6 +15,7 @@
           <c:when test="${not empty day}">
             <td>
               ${fn:substring(day,8,10)}<br>
+              <c:set var="daykey" value="${fn:trim(fn:substring(day, 0, 10))}" />
               <c:set var="shift" value="${shiftMap[daykey]}" />
               <c:choose>
                 <c:when test="${shift != null}">

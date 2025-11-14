@@ -1,11 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link rel="stylesheet" href="css/adminshiftview.css">
+<link rel="stylesheet" href="css/style.css">
 <c:set var="editMode" value="${editMode}" />
+
 <h2 id="monthLabel">${year}年${month}月のシフト</h2>
 <table>
   <tr>
-    <th>ユーザーID</th>
+    <th>ユーザーID<br>
+    名前</th>
     <c:forEach var="date" items="${dateList}">
       <th>${date}</th>
     </c:forEach>
@@ -13,12 +17,13 @@
 
   <c:forEach var="entry" items="${shiftMap}">
     <tr>
-      <td>${entry.key}</td>
+      <td>${entry.key}<br>
+      <c:out value="${userNameMap[entry.key]}"/></td>
       <c:forEach var="date" items="${dateList}">
         <td>
         <c:set var="found" value="false" />
 <c:forEach var="shift" items="${entry.value}">
-  <c:if test="${shift.date == date}">
+<c:if test="${fn:trim(shift.date) == fn:trim(date)}">
     <c:choose>
       <c:when test="${editMode}">
         <select name="shift_${entry.key}_${date}" class="shift-select" data-target="time_${entry.key}_${date}">
@@ -79,3 +84,4 @@
     </tr>
   </c:forEach>
 </table>
+

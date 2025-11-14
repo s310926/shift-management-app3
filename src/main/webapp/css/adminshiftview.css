@@ -1,10 +1,21 @@
 @charset "UTF-8";
 
+.container {
+	width:800px;
+		background-color:#d3d3d3;
+		padding:24px;
+		margin:80px auto;
+		border:solid 2px #ccc;
+		border-radius:8px;
+		box-shadow:0 0 8px gray;
+}
+
 table{
 	width:100%;
 	border-collapse:collapse;
 	table-layout:fixed;
 	margin-top:20px;
+/*	background-color:#fff;*/
 }
 
 th,td{
@@ -12,18 +23,21 @@ th,td{
 	padding: 12px 10px;
 	text-align:center;
 	font-size:14px;
-	background-color: #fdfdfd;
+/*	background-color: #fdfdfd;*/
 
 }
 
 th{
-	background-color:#f0f0f0;
+	background-color:#e0e0e0;
 	font-weight:bold;
-	color:#333;
+	color:#222;
+	padding:14px 10px;
 }
 
 td{
 	min-height:100px;
+	vertical-align:top;
+	background-color:#fcfcfc;
 	vertical-align:top;
 }
 
@@ -43,10 +57,12 @@ width:120px;
 }
 select{
 	width:100%;
-	max-width:100px;
+	max-width:120px;
 	padding:6px;
 	font-size:13px;
-	box-sizing:border-box;
+	border:1px solid #ccc;
+	border-radius:4px;
+	background-color:#fff;
 }
 
 select.time-select{
@@ -55,6 +71,7 @@ select.time-select{
 
 .table-wrapper{
 	overflow-x:auto;
+	position:relative;
 }
 
 .action-btn{
@@ -75,3 +92,46 @@ select.time-select{
 .action-btn:hover{
 	background-color: #c5ae94;
 }
+
+@media screen and (max-width:768px) {
+	
+	.container{
+		width:95%;
+		margin:20px auto;
+		padding:16px;
+	}
+	
+	table{
+		display:block;
+		overflow-x:auto;
+		white-space:nowrap;
+		font-size:12px;
+		min-width:600px;
+	}
+	
+	th,td{
+		padding:8px 6px;
+		font-size:12px;
+	}
+	
+	select{
+		font-size:13px;
+	max-width:100%;
+	}
+	
+	.action-btn{
+		width:100%;
+		font-size:13px;
+		padding:10px;
+		margin:8px 0;
+		}
+	
+		.nav{
+			flex-direction:column;
+			gap:8px;
+		}
+		
+		#prev,#next{
+			
+			width:100%;
+		}

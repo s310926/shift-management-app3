@@ -9,6 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="css/style.css">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>シフト確認画面</title>
 </head>
 <body>
@@ -16,8 +18,6 @@
 <h1>シフト確認</h1>
 <h2 class="month-label" id="monthLabel">${year}年${month}月</h2>
 <div id="calendarArea">
-
-
 <table>
   <tr>
 <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>

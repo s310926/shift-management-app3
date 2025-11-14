@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class ShiftDAO {
 		String sql = "INSERT INTO shift_table(USER_ID,DATE,TYPE,TIME) VALUES(?,?,?,?)";
 		//Connection conn = new DBConnection().getConnection("shift_db");
 		
-		try (Connection conn = new DBConnection().getConnection("shift_db");
+		try (Connection conn = DBConnection.getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql)){
 			
 		
@@ -40,7 +41,7 @@ public class ShiftDAO {
 		String updateSql = "UPDATE shift_table SET TYPE=?, TIME=? WHERE USER_ID=? AND DATE=?";
 	    String insertSql = "INSERT INTO shift_table(USER_ID, DATE, TYPE,TIME) VALUES (?, ?,?,?)";
 	    
-	    try(Connection conn = new DBConnection().getConnection("shift_db");
+	    try(Connection conn = DBConnection.getConnection("shift_db");
 	    		PreparedStatement updateStmt = conn.prepareStatement(updateSql)){
 	    	
 	    	updateStmt.setString(1,type);
@@ -70,7 +71,7 @@ public class ShiftDAO {
 		List<Shift> shiftList = new ArrayList<>();
 		String sql = "SELECT USER_ID, DATE, TYPE,TIME FROM shift_table WHERE USER_ID=? ORDER BY USER_ID, DATE";
 		
-		try (Connection conn = new DBConnection().getConnection("shift_db");
+		try (Connection conn = DBConnection.getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql)){
 	
 			 pStmt.setString(1, userId);
@@ -97,7 +98,7 @@ public class ShiftDAO {
 		Map<String,List<Shift>> shiftMap = new LinkedHashMap<>();
 		String sql = "SELECT USER_ID,DATE,TYPE,TIME FROM shift_table ORDER BY user_id,DATE";
 		
-		try (Connection conn = new DBConnection().getConnection("shift_db");
+		try (Connection conn = DBConnection.getConnection("shift_db");
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 				ResultSet rs = pStmt.executeQuery()){
 				
@@ -124,7 +125,7 @@ public class ShiftDAO {
 	    List<Shift> shiftList = new ArrayList<>();
 	    String sql = "SELECT USER_ID, DATE, TYPE, TIME FROM shift_table ORDER BY DATE";
 
-	    try (Connection conn = new DBConnection().getConnection("shift_db");
+	    try (Connection conn = DBConnection.getConnection("shift_db");
 	         PreparedStatement pStmt = conn.prepareStatement(sql);
 	         ResultSet rs = pStmt.executeQuery()) {
 
@@ -149,7 +150,7 @@ public class ShiftDAO {
 	    String ym = String.format("%04d-%02d", year, month); // ← "2025-11" のようにゼロ埋め
 	    String sql = "SELECT USER_ID, DATE, TYPE, TIME FROM shift_table WHERE DATE LIKE ? ORDER BY USER_ID, DATE";
 
-	    try (Connection conn = new DBConnection().getConnection("shift_db");
+	    try (Connection conn = DBConnection.getConnection("shift_db");
 	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
 
 	        pStmt.setString(1, ym + "%"); // ← "2025-11%" のように月指定
@@ -177,7 +178,7 @@ public class ShiftDAO {
 		String ym = String.format("%04d-%02d",year,month);
 		String sql = "SELECT DATE,TYPE,TIME FROM shift_table WHERE USER_ID = ?AND DATE LIKE ? ORDER BY DATE";
 		
-		try(Connection conn = new DBConnection().getConnection("shift_db");
+		try(Connection conn = DBConnection.getConnection("shift_db");
 			PreparedStatement pStmt = conn.prepareStatement(sql)){
 			
 			pStmt.setString(1, userId);
@@ -200,4 +201,26 @@ public class ShiftDAO {
 		return shiftMap;
 			}
 			
+	
+	public Map<String,String>getUserNameMap(){
+		Map<String,String>userNameMap = new HashMap<>();
+		String sql = "SELECT USER_ID,NAME FROM user_table";
+		
+		try(Connection conn = DBConnection.getConnection("shift_db");
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery()) {
+			
+			while (rs.next()) {
+	            String userId = rs.getString("USER_ID");
+	            String name = rs.getString("NAME");
+	            userNameMap.put(userId, name);
+	            
+		}
+		}catch (SQLException e) {
+	        e.printStackTrace();
+		}
+		return userNameMap;
+		
+	}
+	
 	}

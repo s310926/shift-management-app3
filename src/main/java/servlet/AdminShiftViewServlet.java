@@ -2,12 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -19,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 
 import model.Shift;
 import model.ShiftDAO;
+import model.ShiftDateGenerator;
 import model.User;
 
 /**
@@ -55,28 +52,25 @@ public class AdminShiftViewServlet extends HttpServlet {
 			response.sendRedirect("login.jsp");
 			return;
 		}
-		
-		ShiftDAO dao = new ShiftDAO();
-		List<Shift> shiftList = dao.findAllShifts();
-		
 		LocalDate now = LocalDate.now();
 		int year = now.getYear();
 		int month = now.getMonthValue();
+		
+		
+		ShiftDAO dao = new ShiftDAO();
+//		List<Shift> shiftList = dao.findAllShifts();
+		Map<String, List<Shift>> shiftMap = dao.getShiftMapForMonth(year, month);
+		Map<String,String>userNameMap = dao.getUserNameMap();
+		List<String> dateList = new ShiftDateGenerator().getDates(year, month);
+		
+		
 
 		request.setAttribute("year", year);
 		request.setAttribute("month", month);
 		
-		Map<String,List<Shift>> shiftMap = new LinkedHashMap<>();
-		Set<String> dateSet = new TreeSet<>();
-		
-		for(Shift shift : shiftList) {
-			String userId = shift.getUserId();
-			shiftMap.computeIfAbsent(userId,k -> new ArrayList<>()).add(shift);
-			dateSet.add(shift.getDate());
-		}
-		List<String> dateList = new ArrayList<>(dateSet);
 		
 		request.setAttribute("shiftMap", shiftMap);
+		request.setAttribute("userNameMap", userNameMap);
 		request.setAttribute("dateList", dateList);
 		
 		
