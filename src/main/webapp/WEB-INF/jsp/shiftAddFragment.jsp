@@ -59,6 +59,7 @@
 <section>
   <div class="nav">
     <div id="prev">先月</div>
+    <input type="submit" value="登録する">
     <div id="next">来月</div>
   </div>
 </section>

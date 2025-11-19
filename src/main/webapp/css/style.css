@@ -106,6 +106,12 @@ body{
 	text-align:center;
 }
 
+.success-message{
+	color:blue;
+	font-weight:bold;
+	text-align:center;
+}
+
 a{
 	display:inline-block;
 	text-decoration:none;

@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import model.RegisterDAO;
 import model.User;
 import model.UserDAO;
 
@@ -42,29 +41,61 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String userId = request.getParameter("userId");
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
 		
-
+//		System.out.println("Servlet: doPost開始");
+//		System.out.println("Servlet: userId = " + userId);
 		
-		 int idNum = Integer.parseInt(userId);
-		    String role = (idNum < 5000) ? "admin" : "user";
+		 int idNum;
+		 try {
+		        idNum = Integer.parseInt(userId);
+		    } catch (NumberFormatException e) {
+		        request.setAttribute("registerError", "ユーザーIDは数字で入力してください");
+		        request.setAttribute("userId", userId);
+		        request.setAttribute("name", name);
+		        request.setAttribute("pass", pass);
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/register.jsp");
+		        dispatcher.forward(request, response);
+		        return;
+		    }
+
+//		 int idNum = Integer.parseInt(userId);
+	    String role = (idNum < 5000) ? "admin" : "user";
 		    
 		    
 
-		    User user = new User(userId, name, pass, role);
-		    new UserDAO().insertUser(user);
-		    
-		    RegisterDAO dao = new RegisterDAO();
-		    dao.insertLogin(userId, name, pass,role);
+	    User user = new User(userId, name, pass, role);
+	    try {
+	        UserDAO userDao = new UserDAO();
+//	        System.out.println("Servlet: insertUser() 呼び出し前");
 
-		  
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-		dispatcher.forward(request, response);
-		}
+	        boolean result = userDao.insertUser(user);
+//	        System.out.println("Servlet: insertUser() 呼び出し後、結果 = " + result);
+
+	        if (!result) {
+	            request.setAttribute("registerError", "このユーザーIDはすでに登録されています");
+	            request.setAttribute("userId", userId);
+	            request.setAttribute("name", name);
+	            request.setAttribute("pass", pass);
+	            RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/register.jsp");
+	            dispatcher.forward(request, response);
+	            return;
+	        }
+
+	        request.setAttribute("registerSuccess", "新規登録が完了しました");
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response);
+
+	    } catch (Exception e) {
+//	        System.out.println("Servlet: 例外発生 - " + e.getMessage());
+	        e.printStackTrace();
+	        request.setAttribute("registerError", "予期せぬエラーが発生しました");
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/register.jsp");
+	        dispatcher.forward(request, response);
+	    }
 	}
+}
 
 

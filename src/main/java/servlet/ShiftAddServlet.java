@@ -82,13 +82,10 @@ public class ShiftAddServlet extends HttpServlet {
 		}
 		dao.updateOrInsertShift(userId, date, shift, time);
 
-//			動作確認
-			System.out.println("対象日付: " + date + " / shift値: " + shift + " / time値: " + time);
-		
-		
+
 		}
 		
-		System.out.println("ShiftAddServlet POST開始");
+//		System.out.println("ShiftAddServlet POST開始");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/result.jsp");
 		dispatcher.forward(request, response);
 		

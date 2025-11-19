@@ -39,6 +39,11 @@ public class LoginServlet extends HttpServlet {
 	        request.setAttribute("loginError", loginError);
 	        session.removeAttribute("loginError");
 	    }
+	    String success = (String)session.getAttribute("registerSuccess");
+	    if(success != null) {
+	    	request.setAttribute("registerSuccess", success);
+	    	session.removeAttribute("registerSuccess");
+	    }
 
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 	    dispatcher.forward(request, response);
@@ -51,14 +56,15 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String userId = request.getParameter("userId");
+		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
 		
 		UserDAO dao = new UserDAO();
-		User user = dao.findByIdAndPassword(userId, pass);
+		User user = dao.findByIdAndPassword(userId,name, pass);
 		
 		if(user == null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("loginError", "登録されていません。新規登録してください");
+			session.setAttribute("loginError", "ユーザー情報が一致しません。新規登録はお済みですか？");
 			response.sendRedirect("LoginServlet");
 			return;
 		}

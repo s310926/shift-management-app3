@@ -3,11 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-<!--  <tr>-->
-<!--    <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>-->
-<!--  </tr>-->
-
-
   <c:forEach var="week" items="${calendar}">
     <tr>
       <c:forEach var="day" items="${week}">
@@ -20,7 +15,7 @@
               <c:choose>
                 <c:when test="${shift != null}">
                   ${shift.type}
-                  <c:if test="${shift.type == '〇' && not empty shift.time}">
+                  <c:if test="${shift.type == '〇' && not empty shift.time}"><br>
                   (${shift.time})
                   </c:if>
                 </c:when>

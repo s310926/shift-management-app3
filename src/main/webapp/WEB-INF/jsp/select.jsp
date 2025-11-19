@@ -3,9 +3,7 @@
     <link rel="stylesheet" href="css/style.css">
     
 <!--    <%@ page import="model.User" %>-->
-<!--    <%-->
-<!--User user = (User) session.getAttribute("loginUser");-->
-<!--%>-->
+
 <!DOCTYPE html>
 <html>
 <head>

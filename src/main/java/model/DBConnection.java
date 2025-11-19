@@ -16,12 +16,19 @@ public class DBConnection {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			return DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS);
 		}catch(ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new IllegalStateException("JDBCドライバが見つかりません");
+//			e.printStackTrace();
+//			throw new IllegalStateException("JDBCドライバが見つかりません");
+//			 System.out.println("JDBCドライバが見つかりません: " + e.getMessage());
+		        e.printStackTrace();
+		        return null;
+
 		}catch(SQLException e) {
-			
-			e.printStackTrace();
-			throw new IllegalStateException("接続できません");
+//			System.out.println("DB接続エラー: " + e.getMessage());
+	        e.printStackTrace();
+	        return null;
+
+//			e.printStackTrace();
+//			throw new IllegalStateException("接続できません");
 			
 			}
 	}

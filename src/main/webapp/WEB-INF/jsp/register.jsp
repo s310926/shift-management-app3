@@ -1,21 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
-<link rel="stylesheet" href="css/style.css">
+
 <html>
 <head>
+<link rel="stylesheet" href="css/style.css">
 <meta charset="UTF-8">
 <title>新規登録画面</title>
-<head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="login-container">
 <h1>新規登録画面</h1>
+<c:if test = "${not empty registerError}">
+<p class="error-message">${registerError}</p>
+</c:if>
+<c:if test ="${not empty registerSuccess}">
+<p class = "success-message">${registerSuccess}</p>
+</c:if>
 <form action="RegisterServlet" method="post" id="registerForm">
-ユーザーID：<input type="text" name="userId" placeholder="支給されたID" class="input-field"><span class="error" id="errorId"></span><br>
-ユーザー名：<input type="text" name ="name" placeholder="名前" class="input-field"><span class="error" id="errorName"></span><br>
-パスワード：<input type="password" name="pass" placeholder="パスワード" class="input-field"><span class="error" id="errorPass"></span><br>
+ユーザーID：<input type="text" name="userId" value="${userId}" placeholder="支給されたID" class="input-field"><span class="error" id="errorId"></span><br>
+ユーザー名：<input type="text" name ="name" value="${name}" placeholder="名前" class="input-field"><span class="error" id="errorName"></span><br>
+パスワード：<input type="password" name="pass" value="${pass}" placeholder="パスワード" class="input-field"><span class="error" id="errorPass"></span><br>
 <input type = "submit" id="submit" value ="新規登録" class="btn">
 
 
@@ -53,13 +61,7 @@ if(pass.value.trim() == ""){
 		}
 		if(!valid){
 			e.preventDefault();
-			}else{
-				e.prevventDefault();
-				alert('新規登録完了しました。\nログイン画面に移動します。');
-				setTimeout(() => {
-				      document.getElementById("registerForm").submit();
-				    }, 100); // 0.1秒後に送信
-				  }
+		}
 								
 });
 </script>
